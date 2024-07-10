@@ -44,54 +44,54 @@ const apikeys = {
 const SCOPE = ['https://www.googleapis.com/auth/drive'];
 
 
-// async function authorize() {
-//   const jwtClient = new google.auth.JWT(
-//     apikeys.client_email,
-//     null,
-//     apikeys.private_key,
-//     SCOPE
-//   );
-//   await jwtClient.authorize();
-//   return jwtClient;
-// }
-// async function uploadFile(authClient, filePath, fileName, uniqueFileName) {
-//   return new Promise((resolve, reject) => {
-//     const drive = google.drive({ version: 'v3', auth: authClient });
-//     const fileMetaData = {
-//       name: uniqueFileName,
-//       parents: ['1R3XLHbZ6YU0j196THSagMeC6W-QKKeSQ'] // Change this to your folder ID
-//     };
+async function authorize() {
+  const jwtClient = new google.auth.JWT(
+    apikeys.client_email,
+    null,
+    apikeys.private_key,
+    SCOPE
+  );
+  await jwtClient.authorize();
+  return jwtClient;
+}
+async function uploadFile(authClient, filePath, fileName, uniqueFileName) {
+  return new Promise((resolve, reject) => {
+    const drive = google.drive({ version: 'v3', auth: authClient });
+    const fileMetaData = {
+      name: uniqueFileName,
+      parents: ['1R3XLHbZ6YU0j196THSagMeC6W-QKKeSQ'] // Change this to your folder ID
+    };
 
-//     drive.files.create({
-//       resource: fileMetaData,
-//       media: {
-//         body: fs.createReadStream(filePath),
-//         mimeType: 'video/mp4'
-//       },
-//       fields: 'id'
-//     }, function (err, file) {
-//       if (err) {
-//         return reject(err);
-//       }
-//       resolve(file);
-//     });
-//   });
-// }
-// async function generateDownloadLink(authClient, fileId) {
-//   const drive = google.drive({ version: 'v3', auth: authClient });
-//   await drive.permissions.create({
-//     fileId: fileId,
-//     requestBody: {
-//       role: 'reader',
-//       type: 'anyone',
-//     }
-//   });
-//   const result = await drive.files.get({
-//     fileId: fileId,
-//     fields: 'webViewLink, webContentLink'
-//   });
-//   return result.data;
-// }
+    drive.files.create({
+      resource: fileMetaData,
+      media: {
+        body: fs.createReadStream(filePath),
+        mimeType: 'video/mp4'
+      },
+      fields: 'id'
+    }, function (err, file) {
+      if (err) {
+        return reject(err);
+      }
+      resolve(file);
+    });
+  });
+}
+async function generateDownloadLink(authClient, fileId) {
+  const drive = google.drive({ version: 'v3', auth: authClient });
+  await drive.permissions.create({
+    fileId: fileId,
+    requestBody: {
+      role: 'reader',
+      type: 'anyone',
+    }
+  });
+  const result = await drive.files.get({
+    fileId: fileId,
+    fields: 'webViewLink, webContentLink'
+  });
+  return result.data;
+}
 // app.post('/upload', upload.single('videoFile'), async (req, res) => {
 //   try {
 //     const uniqueFileName = `${Date.now()}-${uuid()}.mp4`;
