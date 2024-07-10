@@ -17,7 +17,7 @@ const { v4: uuid } = require('uuid');
 const https = require('https');
 const url = require('url');
 const path = require('path');
-require("dotenv").config();
+// require("dotenv").config();
 const app = express();
 
 mongoose
