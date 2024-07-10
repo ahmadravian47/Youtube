@@ -1,0 +1,129 @@
+.bod {
+    font-family: "Poppins", sans-serif;
+    background-color: rgb(244, 244, 244);
+    padding: 0;
+    margin: 0;
+    border: 2px solid rgb(244, 244, 244);
+}
+
+.portal-button {
+    padding: 20px 40px;
+    background-color: black;
+    color: white;
+    border: none;
+}
+
+.bod .content {
+    width: 70%;
+    margin: 2rem auto;
+    background-color: white;
+    padding: 12px 36px;
+    border-radius: 15px;
+}
+
+.bod .content .users {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.bod .content .users .user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid gainsboro;
+    margin-bottom: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    border-radius: 10px;
+}
+
+.bod .content .users .user .left h2 {
+    font-weight: 500;
+}
+
+.bod .content .users .user .left h4 {
+    display: inline-block;
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 1rem;
+    background-color: #8a05ff;
+    color: white;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.bod .content .users .user .right button {
+    font-family: "Poppins", sans-serif;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 16px 32px;
+}
+
+
+.bod .content .users .user .right button:hover {
+    background-color: #8a05ff;
+}
+
+@media (max-width: 600px) {
+    .bod .content .users .user {
+        flex-direction: column;
+        align-items: start;
+        padding: 0;
+        padding-bottom: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .bod .content .users .user .left {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .bod .content .users .user .left h4 {
+        margin-bottom: 0;
+    }
+
+    .bod .content .users .user .right {
+        width: 100%;
+    }
+
+    .bod .content .users .user .right button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 360px) {
+    .bod .content {
+        width: 95%;
+    }
+}
+
+@media (max-width: 300px) {
+    .bod .content .users .user .left h2 {
+        font-size: 12px;
+    }
+
+    .bod .content h4 {
+        font-size: 16px;
+    }
+
+    .bod {
+        padding: 0;
+    }
+
+    .bod .content {
+        width: 95%;
+        padding: 2px 4px;
+    }
+}

@@ -1,0 +1,124 @@
+/* Navbar.css */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    font-family: "Poppins", sans-serif;
+    margin-top: -0.5rem;
+    padding-left: 0.5rem;
+    /* border: 2px solid green; */
+  }
+  .navbar .logo{
+    list-style: none;
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+    font-size: x-large;
+  }
+  .navbar .navbar-links .li{
+    list-style: none;
+    text-decoration: none;
+    color: black;
+    padding-left: 2rem;
+  }
+  .navbar .navbar-links .li:hover{
+    color:#8a05ff;
+  }
+  .navbar-auth .navbar-get-started:hover{
+    background-color: #8a05ff;
+    color: white;
+  }
+  .navbar-links {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-auth {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* border: 2px solid yellow; */
+  }
+  
+  .navbar-get-started {
+    background-color: black;
+    color: white;
+    padding: 20px 40px;
+    text-decoration: none;
+  }
+  
+  .navbar-get-started:hover {
+    background-color: #333;
+  }
+  nav .hamburger-menu{
+    display: none;
+  }
+  nav .hamburger-lines{
+    display: none;
+  }
+
+
+  
+/* Media queries for responsiveness */
+@media (max-width: 1024px) {
+  .navbar .logo{
+    margin-left: 2rem;
+  }
+ 
+  .ab{
+    position: absolute;
+  }
+  .navbar-get-started {
+    background-color: black;
+    color: white;
+    padding: 13px 26px;
+    text-decoration: none;
+  }
+  .navbar{
+    width: 100%;
+    border: none;
+  }
+  nav .navbar-links{
+    display: none;
+  }
+  nav .hamburger-lines{
+    display: block;
+  }
+  nav .hamburger-menu{
+    display: none;
+    opacity: 0; 
+    transition: 'opacity' 1s ease;
+    margin: 0;
+  }
+  .hamburger-menu.open {
+    box-sizing: border-box;
+    display: block;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    background-color: white;
+    color: black;
+    width: 100%;
+    opacity: 1;
+    margin: 0;
+    margin-top: 3.1rem;
+    border-bottom: 1px solid black;
+    /* padding-left: 1rem; */
+  }
+  
+  .hamburger-lines {
+    cursor: pointer;
+  } 
+  .hamburger-menu .li{
+    text-decoration: none;
+    color: black;
+    padding: 0.7rem 0;
+    padding-left: 1rem;
+    border-top: 1px solid black;
+  }
+}
+  

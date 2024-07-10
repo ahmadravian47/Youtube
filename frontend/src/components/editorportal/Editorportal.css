@@ -1,0 +1,93 @@
+#ep{
+    font-family: "Poppins", sans-serif;
+}
+#ep h1{
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+#ep form div{
+    width: 40%;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+}
+#ep form div input{
+    font-family: "Poppins", sans-serif;
+    margin: 0 auto;
+    display: block;
+    width: 100%;
+    background-color: white;
+    color: #000000;
+    border: 1px solid #000000;
+}
+#ep form div textarea{
+    margin: 0 auto;
+    display: block;
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    background-color: white;
+    color: #000000;
+    border: 1px solid #000000;
+}
+#ep form div select{
+    margin: 0 auto;
+    display: block;
+    width: 100%;
+    font-family: "Poppins", sans-serif;
+    background-color: white;
+    color: #000000;
+    border: 1px solid #000000;
+}
+#ep form button{
+    font-family: "Poppins", sans-serif;
+    display: block;
+    margin: 0 auto;
+    margin-top: 2rem;
+    background-color: #010101;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+}
+#ep form button:hover{
+    background-color: #8a05ff;
+}
+
+@media screen and (max-width:1000px){
+    #ep form div{
+        width: 50%;
+    }
+}
+@media screen and (max-width:900px){
+    #ep form div{
+        width: 60%;
+    }
+}
+@media screen and (max-width:800px){
+    #ep form div{
+        width: 70%;
+    }
+}
+@media screen and (max-width:700px){
+    #ep form div{
+        width: 80%;
+    }
+}
+@media screen and (max-width:550px){
+    #ep h1{
+        font-size: 28px;
+        font-weight: 500;
+        margin-bottom: 2rem;
+    }
+}
+@media screen and (max-width:400px){
+    #ep h1{
+        font-size: 24px;
+        font-weight:normal;
+        margin-bottom: 1rem;
+    }
+}
+@media screen and (max-width:320px){
+    #ep form div{
+        width: 97%;
+    }
+}

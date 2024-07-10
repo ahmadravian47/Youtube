@@ -1,0 +1,305 @@
+.herosection {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    font-family: "Poppins", sans-serif;
+    border-top: 1px solid black;
+
+}
+
+.herosection .leftsection {
+    width: 50%;
+}
+
+.herosection .leftsection h1 {
+    font-size: 72px;
+    font-weight: 300;
+    width: 75%;
+    margin: 0 auto;
+    line-height: 5rem;
+}
+
+.herosection .leftsection p {
+    width: 75%;
+    margin: 2rem auto;
+    font-size: 24px;
+    color: rgb(77 77 77);
+}
+
+.herosection .rightsection {
+    width: 50%;
+    height: 100%;
+}
+
+.herosection .rightsection img {
+    width: 100%;
+}
+
+.herosection .leftsection .hero-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 75%;
+    margin: 0 auto;
+}
+
+.herosection .leftsection #primary {
+    background-color: #010101;
+    color: white;
+    padding: 18px 36px;
+    width: 35%;
+    margin: 0;
+    text-decoration: none;
+    text-align: center;
+}
+
+.herosection .leftsection #secondary {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: 1px solid rgb(13, 13, 13);
+    padding: 18px 36px;
+    width: 35%;
+    margin: 0;
+    text-decoration: none;
+    text-align: center;
+}
+.herosection .leftsection #primary:hover{
+    background-color: #8a05ff;
+    color: white;
+}
+.herosection .leftsection #secondary:hover{
+    background-color: black;
+    color: white;
+}
+
+@media screen and (max-width:1267px) {
+    .herosection .leftsection .hero-buttons {
+        flex-direction: column;
+        width: 70%;
+        margin: 0 auto;
+    }
+
+    .herosection .leftsection .hero-buttons #primary {
+        width: 70%;
+        margin-bottom: 1rem;
+    }
+
+    .herosection .leftsection .hero-buttons #secondary {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width:1300px) {
+    .herosection .leftsection h1 {
+        font-size: 64px;
+    }
+
+    .herosection .leftsection p {
+        width: 75%;
+        margin: 2rem auto;
+        font-size: 18px;
+    }
+
+    .herosection {
+        margin-bottom: 2rem;
+    }
+
+}
+
+@media screen and (max-width:1200px) {
+    .herosection .leftsection {
+        padding: 3rem 0;
+    }
+}
+
+@media screen and (max-width:1012px) {
+    .herosection .rightsection {
+        display: none;
+    }
+
+    .herosection {
+        width: 100%;
+    }
+
+    .herosection .leftsection {
+        width: 100%;
+        padding: 0;
+        padding-top: 3rem;
+    }
+
+    .herosection .leftsection h1 {
+        margin: 0;
+        width: 65%;
+        line-height: 7vw;
+        font-size: 7vw;
+    }
+
+    .herosection .leftsection p {
+        width: 70%;
+        margin: 1rem 0;
+        color: rgb(77 77 77);
+        font-weight: 400;
+    }
+
+    .herosection .leftsection .hero-buttons {
+        margin: 0;
+        width: 100%;
+        margin-top: 2rem;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .herosection .leftsection .hero-buttons #primary {
+        display: block;
+        margin: 0;
+        text-align: center;
+        width: 45%;
+    }
+    .herosection .leftsection .hero-buttons #secondary {
+        display: block;
+        width: 45%;
+        margin: 0;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width:934px) {
+    .herosection .leftsection p {
+        width: 75%;
+    }
+}
+
+@media screen and (max-width:865px) {
+    .herosection .leftsection p {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width:812px) {
+    .herosection .leftsection p {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width:752px) {
+    .herosection .leftsection p {
+        width: 85%;
+    }
+
+    /* .herosection .leftsection .hero-buttons {
+        width: 100%;
+        margin: 0 auto;
+        background-color: #010101;
+    }
+
+    .herosection .leftsection .hero-buttons #primary {
+        margin: 0 auto;
+        width: 30%;
+        text-align: center;
+    } */
+}
+
+@media screen and (max-width:708px) {
+    .herosection .leftsection p {
+        width: 100%;
+    }
+
+    /* h1 will be fixed from here */
+    .herosection .leftsection h1 {
+        font-size: 48px;
+        line-height: 50px;
+        width: 70%;
+    }
+}
+
+@media screen and (max-width:670) {
+    .herosection .leftsection p {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:600px) {
+
+    /* h1 will be fixed from here */
+    .herosection .leftsection h1 {
+        width: 78%;
+    }
+}
+
+/* now for better mobile experience/////////*/
+@media screen and (max-width:550px) {
+    .herosection .leftsection h1 {
+        margin: 0 auto;
+        width: 95%;
+        line-height: 50px;
+        font-size: 48px;
+        font-weight: 350;
+    }
+
+    .herosection .leftsection p {
+        margin: 2rem auto;
+        width: 95%;
+    }
+
+    .herosection .leftsection .hero-buttons {
+        width: 95%;
+        margin: 0 auto;
+        flex-direction: column;
+    }
+
+    .herosection .leftsection .hero-buttons #primary {
+        margin: 0 auto;
+        width: 85%;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    .herosection .leftsection .hero-buttons #secondary {
+        margin: 0 auto;
+        width: 85%;
+        text-align: center;
+    }
+}
+@media screen and (max-width:480px) {
+    .herosection .leftsection .hero-buttons #primary {
+        width: 80%;
+    }
+    .herosection .leftsection .hero-buttons #secondary {
+        width: 80%;
+    }
+}
+@media screen and (max-width:400px) {
+    .herosection .leftsection .hero-buttons #primary {
+        width: 75%;
+    }
+    .herosection .leftsection .hero-buttons #secondary {
+        width: 75%;
+    }
+}
+@media screen and (max-width:300px) {
+    .herosection .leftsection .hero-buttons #primary {
+        width: 65%;
+    }
+    .herosection .leftsection .hero-buttons #secondary {
+        width: 65%;
+    }
+}
+@media screen and (max-width:300px) {
+    .herosection .leftsection h1 {
+        margin: 0 auto;
+        width: 95%;
+        line-height: 40px;
+        font-size: 42px;
+        font-weight: 350;
+    }
+}
+
+@media screen and (max-width:250px) {
+    .herosection .leftsection h1 {
+        margin: 0 auto;
+        width: 95%;
+        line-height: 38px;
+        font-size: 36px;
+        font-weight: 350;
+    }
+
+}

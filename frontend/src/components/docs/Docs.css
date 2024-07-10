@@ -1,0 +1,105 @@
+.docs{
+    font-family: "Poppins", sans-serif;
+    border-top: 1px solid black;
+}
+.docs h1{
+    text-align: center;
+    font-size: 56px;
+    font-weight: 300;
+}
+.docs .boxes{
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+.docs .boxes .box{
+    width: 45%;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding-bottom: 2rem;
+}
+.docs .boxes .box ul{
+    padding-right: 1rem;
+}
+.docs .boxes .box ul li{
+    padding-bottom: 1rem;
+}
+.docs .boxes .box .purple{
+    width: 100%;
+    height: 8px;
+    background-color: #8a05ff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.docs .boxes .box h3{
+    font-weight: 500;
+    font-size: 32px;
+    margin-top: 1rem;
+    padding-left: 2rem;
+    margin-bottom: 0;
+}
+.docs .boxes .box p{
+    padding-left: 2rem;
+    margin-top: 0.5rem;
+}
+.docs .boxes .box span{
+    color: #8a05ff;
+}
+
+@media screen and (max-width:1000px){
+    .docs .boxes{
+       flex-direction: column;
+    }
+    .docs .boxes .box{
+        width: 90%;
+        margin: 0 auto;
+        margin-bottom: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding-bottom: 2rem;
+    }
+}
+@media screen and (max-width:800px){
+    .docs h1{
+        font-size: 42px;
+    }
+    .docs .boxes .box h3{
+        font-size: 24px;
+    }
+}
+@media screen and (max-width:685px){
+    .docs .boxes .box h3{
+        font-size: 20px;
+    }
+}
+@media screen and (max-width:600px){
+    .docs .boxes{
+        width: 100%;
+     }
+     .docs .boxes .box{
+         width: 85%;
+         margin: 0 auto;
+     }
+    .docs h1{
+        font-size: 36px;
+    }
+}
+@media screen and (max-width:500px){
+     .docs .boxes .box{
+         width: 90%;
+         margin: 0 auto;
+     }
+    .docs h1{
+        font-size: 32px;
+    }
+}
+@media screen and (max-width:400px){
+    .docs .boxes .box{
+        width: 95%;
+        margin: 0 auto;
+    }
+   .docs h1{
+       font-size: 26px;
+   }
+}

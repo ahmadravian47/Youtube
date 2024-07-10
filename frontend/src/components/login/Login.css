@@ -1,0 +1,84 @@
+.hero{
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+input{
+    box-sizing: border-box;
+}
+.hero .left{
+    width: 50%;
+}
+.hero .left .stupid{
+    max-width: 400px;
+    margin-left: 3rem;
+}
+.hero .right{
+    width: 50%;
+}
+.hero .right img{
+    width: 100%;
+}
+.hero .left .hero-buttons{
+    width: 65%;
+    margin: 0 auto;
+}
+.hero .left .hero-buttons .btn{
+    text-decoration: none;
+    list-style: none;
+    background-color: black;
+    color: white;
+    margin-top: 2rem;
+    padding: 16px 32px;
+    border: none;
+    font-weight: 500;
+}
+.hero .left .but{
+    color: #8a05ff;
+    
+}
+input{
+    margin-bottom: 1rem;
+}
+
+@media screen and (max-width:1150px) {
+    .hero{
+        flex-direction: column;
+        margin-top: 2rem;
+    }
+    .hero .left{
+        width: 70%;
+        margin-bottom: 4rem;
+    }
+    .hero .left .stupid{
+        max-width: 90vw;
+        width: 100%;
+        margin: 0;
+    }
+    .hero .left form{
+        width: 100%;
+        margin: 0;
+    }
+    .hero .left input{
+        display: inline-block;
+        width: 90%;
+    }
+    .hero .right{
+        width: 95%;
+    }
+    .hero .right{
+        display: none;
+        width: 100%;
+    }
+}
+@media screen and (max-width:550px) {
+    .hero .left{
+        width: 85%;
+    }
+}
+@media screen and (max-width:350px) {
+    .hero .left{
+        width: 95%;
+    }
+}
