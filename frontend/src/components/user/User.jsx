@@ -15,7 +15,7 @@ export default function User() {
 
 
   function getProfile() {
-    fetch('http://localhost:3000/profile', {
+    fetch('https://youtube-phi-amber.vercel.app/profile', {
       credentials: 'include'
     })
       .then(r => r.json())
@@ -37,7 +37,7 @@ export default function User() {
   }
   async function getOppositeUsers() {
     try {
-      const response = await fetch('http://localhost:3000/allusers', {
+      const response = await fetch('https://youtube-phi-amber.vercel.app/allusers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export default function User() {
     console.log('Sender ID : ', id);
 
     try {
-      const response = await fetch('http://localhost:3000/sendrequest', {
+      const response = await fetch('https://youtube-phi-amber.vercel.app/sendrequest', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

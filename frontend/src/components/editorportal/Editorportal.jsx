@@ -30,7 +30,7 @@ export default function editorportal() {
     videoData.append('editor', user_id);
 
     console.log(videoData);
-    axios.post('http://localhost:3000/upload', videoData)
+    axios.post('https://youtube-phi-amber.vercel.app/upload', videoData)
       .then(response => {
         console.log('Response:', response);
         alert('Video Uploaded');
@@ -41,7 +41,7 @@ export default function editorportal() {
   }
 
   async function getAllConnections() {
-    fetch('http://localhost:3000/allconnections', {
+    fetch('https://youtube-phi-amber.vercel.app/allconnections', {
       credentials: 'include'
     })
       .then(r => r.json())
@@ -55,7 +55,7 @@ export default function editorportal() {
   }
 
   function getProfile() {
-    fetch('http://localhost:3000/profile', {
+    fetch('https://youtube-phi-amber.vercel.app/profile', {
       credentials: 'include'
     })
       .then(r => r.json())

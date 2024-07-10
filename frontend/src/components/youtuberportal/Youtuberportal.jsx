@@ -6,7 +6,7 @@ export default function Youtuberportal() {
   const [dummy, setdummy] = useState('');
   async function getusernotifications() {
     try {
-      const response = await fetch('http://localhost:3000/allnotifications', {
+      const response = await fetch('https://youtube-phi-amber.vercel.app/allnotifications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export default function Youtuberportal() {
   }
 
   async function approve_video(editor_email, video_name) {
-    axios.post('http://localhost:3000/approve', { editor_email, video_name }, { withCredentials: true })
+    axios.post('https://youtube-phi-amber.vercel.app/approve', { editor_email, video_name }, { withCredentials: true })
       .then(response => {
         console.log('response',response);
         if (response.data.authUrl) {
@@ -43,7 +43,7 @@ export default function Youtuberportal() {
 
   async function delete_notification(video_name) {
     console.log('evideo name', video_name);
-    axios.post('http://localhost:3000/deletenotification', { video_name }, { withCredentials: true })
+    axios.post('https://youtube-phi-amber.vercel.app/deletenotification', { video_name }, { withCredentials: true })
       .then(response => {
         if (response.status == 200) {
           console.log('Notification Deleted !');

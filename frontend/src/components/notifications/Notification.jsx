@@ -14,7 +14,7 @@ export default function User() {
 
     async function getProfile() {
         try {
-            const response = await fetch('http://localhost:3000/profile', {
+            const response = await fetch('https://youtube-phi-amber.vercel.app/profile', {
                 credentials: 'include'
             });
             const res = await response.json();
@@ -32,7 +32,7 @@ export default function User() {
     async function viewrequests(userId) {
         console.log('user id is', userId);
         try {
-            const response = await fetch('http://localhost:3000/allrequests', {
+            const response = await fetch('https://youtube-phi-amber.vercel.app/allrequests', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export default function User() {
         console.log('Sender ID : ', sender_id);
 
         try {
-            const response = await fetch('http://localhost:3000/acceptrequest', {
+            const response = await fetch('https://youtube-phi-amber.vercel.app/acceptrequest', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
