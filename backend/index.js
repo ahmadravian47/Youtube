@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(cookieParser());
 
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'tmp/uploads/' });
 
 const apikeys = {
   client_email: 'test1-511@plucky-pointer-427709-v1.iam.gserviceaccount.com',
