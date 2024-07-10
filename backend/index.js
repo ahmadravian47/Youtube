@@ -20,14 +20,14 @@ const path = require('path');
 // require("dotenv").config();
 const app = express();
 
-// mongoose
-//   .connect(process.env.DB_STRING)
-//   .then(() => {
-//     console.log("Connected to mongodb:cluster1/CarsMernDB");
-//   })
-//   .catch((error) => {
-//     console.error("Error connecting to MongoDB:", error);
-//   });
+mongoose
+  .connect(process.env.DB_STRING)
+  .then(() => {
+    console.log("Connected to mongodb:cluster1/CarsMernDB");
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error);
+  });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
