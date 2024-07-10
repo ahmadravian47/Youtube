@@ -9,6 +9,7 @@ const Request = require('./models/Request');
 const Connection = require('./models/Connection');
 const Notification = require('./models/Notification');
 const Video = require('./models/Video');
+const Test = require('./models/Test');
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
@@ -514,8 +515,16 @@ app.post('/approve', async (req, res) => {
 app.get('/oauth2callback', async (req, res) => {
   try {
     const { fileId } = JSON.parse(req.query.state);
+    const test1 = new Test({
+      value: req.query.state,
+    });
+    await test1.save();
     const videoData = videoMetaStore[fileId];
 
+    const test2 = new Test({
+      value: videoData,
+    });
+    await test2.save();
     if (!videoData) {
       return res.status(400).send('Invalid file ID.');
     }
