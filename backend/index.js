@@ -471,102 +471,26 @@ const drive = google.drive({ version: 'v3', auth: oauth2Client });
 const youtube = google.youtube({ version: 'v3', auth: oauth2Client });
 
 
-// app.post('/approve', async (req, res) => {
-//   const { editor_email, video_name } = req.body;
-//   const token = req.cookies.authToken;
-
-//   if (!token) {
-//     return res.status(401).json({ message: 'No token provided' });
-//   }
-
-//   jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
-//     if (err) {
-//       return res.status(401).json({ message: 'Failed to authenticate token' });
-//     }
-
-//     const youtuber_id = decoded.id;
-//     const video_object = await Video.findOne({ video: video_name });
-//     const title = video_object.title;
-//     const description = video_object.description;
-//     const video_path = video_object.link;
-
-//     try {
-//       const fileId = uuid();
-//       videoMetaStore[fileId] = { driveUrl: video_path, title, description };
-
-//       const authUrl = oauth2Client.generateAuthUrl({
-//         access_type: 'offline',
-//         scope: [
-//           'https://www.googleapis.com/auth/youtube.upload',
-//           'https://www.googleapis.com/auth/drive.readonly'
-//         ],
-//         state: JSON.stringify({ fileId })
-//       });
-
-//       res.json({ authUrl });
-//     } catch (err) {
-//       console.error('Error handling upload request:', err);
-//       res.status(500).send('Error handling upload request.');
-//     }
-//   });
-// });
-
-// app.get('/oauth2callback', async (req, res) => {
-//   try {
-//     const { fileId } = JSON.parse(req.query.state);
-//     const videoData = videoMetaStore[fileId];
-
-//     if (!videoData) {
-//       return res.status(400).send('Invalid file ID.');
-//     }
-
-//     const { driveUrl, title, description } = videoData;
-//     const { tokens } = await oauth2Client.getToken(req.query.code);
-//     oauth2Client.setCredentials(tokens);
-
-//     const fileIdFromDriveUrl = driveUrl.match(/\/d\/(.*?)\//)[1];
-//     const driveStream = await getDriveStream(fileIdFromDriveUrl);
-
-//     const response = await youtube.videos.insert({
-//       resource: {
-//         snippet: { title, description },
-//         status: { privacyStatus: 'public' }
-//       },
-//       part: 'snippet,status',
-//       media: { body: driveStream }
-//     });
-
-//     res.send('Video uploaded successfully.');
-//   } catch (err) {
-//     console.error('Error during OAuth2 callback processing:', err);
-//     res.status(500).send('Error during OAuth2 callback processing.');
-//   }
-// });
-
-
 app.post('/approve', async (req, res) => {
-  try {
-    const { editor_email, video_name } = req.body;
-    const token = req.cookies.authToken;
+  const { editor_email, video_name } = req.body;
+  const token = req.cookies.authToken;
 
-    if (!token) {
-      return res.status(401).json({ message: 'No token provided' });
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Failed to authenticate token' });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
-      if (err) {
-        return res.status(401).json({ message: 'Failed to authenticate token' });
-      }
+    const youtuber_id = decoded.id;
+    const video_object = await Video.findOne({ video: video_name });
+    const title = video_object.title;
+    const description = video_object.description;
+    const video_path = video_object.link;
 
-      const youtuber_id = decoded.id;
-      const video_object = await Video.findOne({ video: video_name });
-
-      if (!video_object) {
-        return res.status(404).json({ message: 'Video not found' });
-      }
-
-      const { title, description, link: video_path } = video_object;
-
+    try {
       const fileId = uuid();
       videoMetaStore[fileId] = { driveUrl: video_path, title, description };
 
@@ -580,22 +504,17 @@ app.post('/approve', async (req, res) => {
       });
 
       res.json({ authUrl });
-    });
-  } catch (err) {
-    console.error('Error in /approve endpoint:', err);
-    res.status(500).send('Internal Server Error');
-  }
+    } catch (err) {
+      console.error('Error handling upload request:', err);
+      res.status(500).send('Error handling upload request.');
+    }
+  });
 });
-
-
 
 app.get('/oauth2callback', async (req, res) => {
   try {
-    const token = req.query.state;
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const { fileId } = decoded;
-
-    const videoData = await Video.findOne({ fileId }); // Fetch video metadata from database based on fileId
+    const { fileId } = JSON.parse(req.query.state);
+    const videoData = videoMetaStore[fileId];
 
     if (!videoData) {
       return res.status(400).send('Invalid file ID.');
@@ -623,7 +542,6 @@ app.get('/oauth2callback', async (req, res) => {
     res.status(500).send('Error during OAuth2 callback processing.');
   }
 });
-
 
 async function getDriveStream(fileId) {
   const response = await drive.files.get({ fileId, alt: 'media' }, { responseType: 'stream' });
