@@ -543,7 +543,6 @@ const youtube = google.youtube({ version: 'v3', auth: oauth2Client });
 //   }
 // });
 
-const jwt = require('jsonwebtoken');
 
 app.post('/approve', async (req, res) => {
   const { editor_email, video_name } = req.body;
@@ -572,7 +571,6 @@ app.post('/approve', async (req, res) => {
   });
 });
 
-const jwt = require('jsonwebtoken');
 
 app.get('/oauth2callback', async (req, res) => {
   try {
