@@ -92,286 +92,286 @@ async function generateDownloadLink(authClient, fileId) {
   });
   return result.data;
 }
-// app.post('/upload', upload.single('videoFile'), async (req, res) => {
-//   try {
-//     const uniqueFileName = `${Date.now()}-${uuid()}.mp4`;
-//     const authClient = await authorize();
-//     const file = await uploadFile(authClient, req.file.path, req.file.originalname, uniqueFileName);
-//     const fileId = file.data.id;
-//     const downloadLinks = await generateDownloadLink(authClient, fileId);
-//     //------------write here--------------------------//
+app.post('/upload', upload.single('videoFile'), async (req, res) => {
+  try {
+    const uniqueFileName = `${Date.now()}-${uuid()}.mp4`;
+    const authClient = await authorize();
+    const file = await uploadFile(authClient, req.file.path, req.file.originalname, uniqueFileName);
+    const fileId = file.data.id;
+    const downloadLinks = await generateDownloadLink(authClient, fileId);
+    //------------write here--------------------------//
 
-//     // For the sake of storing video in database
-//     const editor_details = await User.findOne({ _id: req.body.editor });
-//     const editor_email = editor_details.email;
+    // For the sake of storing video in database
+    const editor_details = await User.findOne({ _id: req.body.editor });
+    const editor_email = editor_details.email;
 
-//     const video = new Video({
-//       youtuber: req.body.youtuber,
-//       editor: editor_email,
-//       editor_name: editor_details.name,
-//       video: uniqueFileName,
-//       link: downloadLinks.webViewLink,
-//       title: req.body.title,
-//       description: req.body.description,
-//     });
-//     await video.save();
+    const video = new Video({
+      youtuber: req.body.youtuber,
+      editor: editor_email,
+      editor_name: editor_details.name,
+      video: uniqueFileName,
+      link: downloadLinks.webViewLink,
+      title: req.body.title,
+      description: req.body.description,
+    });
+    await video.save();
 
-//     // Add a notification to Youberzz
-//     const notification = new Notification({
-//       video: uniqueFileName,
-//       youtuber: req.body.youtuber,
-//       editor: editor_email,
-//       editor_name: editor_details.name
-//     });
-//     await notification.save();
-//     //----------------------------------------------------
-//     fs.unlinkSync(req.file.path); // Delete the file from server after upload
-//     res.status(200).json({ fileId: fileId, downloadLinks: downloadLinks });
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// });
-// app.post('/signup', async (req, res) => {
-//   const { name, email, password, role } = req.body;
-//   const user = await User.findOne({ email: email });
-//   if (user) {
-//     return res.status(400).json({ message: "User already exists!" });
-//   }
+    // Add a notification to Youberzz
+    const notification = new Notification({
+      video: uniqueFileName,
+      youtuber: req.body.youtuber,
+      editor: editor_email,
+      editor_name: editor_details.name
+    });
+    await notification.save();
+    //----------------------------------------------------
+    fs.unlinkSync(req.file.path); // Delete the file from server after upload
+    res.status(200).json({ fileId: fileId, downloadLinks: downloadLinks });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+app.post('/signup', async (req, res) => {
+  const { name, email, password, role } = req.body;
+  const user = await User.findOne({ email: email });
+  if (user) {
+    return res.status(400).json({ message: "User already exists!" });
+  }
 
-//   const youtuber = new User({
-//     name: name,
-//     email: email,
-//     password: password,
-//     type: role
-//   });
-//   const user_id = youtuber._id;
+  const youtuber = new User({
+    name: name,
+    email: email,
+    password: password,
+    type: role
+  });
+  const user_id = youtuber._id;
 
-//   youtuber
-//     .save()
-//     .then(() => {
-//       //now need to store tokens in cookie
+  youtuber
+    .save()
+    .then(() => {
+      //now need to store tokens in cookie
 
-//       const token = jwt.sign({ id: user_id, name: name, type: role }, process.env.JWT_SECRET_KEY, {
-//         expiresIn: "1hr",
-//       });
+      const token = jwt.sign({ id: user_id, name: name, type: role }, process.env.JWT_SECRET_KEY, {
+        expiresIn: "1hr",
+      });
 
-//       res.cookie('authToken', token, {
-//         path: "/",
-//         expires: new Date(Date.now() + 1000 * 3600), // 1 hour
-//         httpOnly: true,
-//         sameSite: "lax",
-//         secure: process.env.NODE_ENV === "production", // Set to true if using HTTPS
-//       });
+      res.cookie('authToken', token, {
+        path: "/",
+        expires: new Date(Date.now() + 1000 * 3600), // 1 hour
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production", // Set to true if using HTTPS
+      });
 
-//       return res.status(200).json({
-//         message: "Successfully Logged In",
-//         user: youtuber,
-//         token,
-//       });
-//       //---------------------------------------
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       return res.status(500).json({ message: "Error Signing Up!" });
-//     });
-// });
-// app.post('/login', async (req, res) => {
-//   const { email, password } = req.body;
-//   const user = await User.findOne({ email: email });
+      return res.status(200).json({
+        message: "Successfully Logged In",
+        user: youtuber,
+        token,
+      });
+      //---------------------------------------
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).json({ message: "Error Signing Up!" });
+    });
+});
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email: email });
 
-//   if (!user) {
-//     return res.status(400).json({ message: "Invalid Email!" });
-//   }
+  if (!user) {
+    return res.status(400).json({ message: "Invalid Email!" });
+  }
 
-//   if (password != user.password) {
-//     return res.status(400).json({ message: "Invalid Password!" });
-//   }
+  if (password != user.password) {
+    return res.status(400).json({ message: "Invalid Password!" });
+  }
 
-//   const token = jwt.sign({ id: user._id, name: user.name, type: user.type }, process.env.JWT_SECRET_KEY, {
-//     expiresIn: "1hr",
-//   });
+  const token = jwt.sign({ id: user._id, name: user.name, type: user.type }, process.env.JWT_SECRET_KEY, {
+    expiresIn: "1hr",
+  });
 
-//   res.cookie('authToken', token, {
-//     path: "/",
-//     expires: new Date(Date.now() + 1000 * 3600), // 1 hour
-//     httpOnly: true,
-//     sameSite: "lax",
-//     secure: process.env.NODE_ENV === "production", // Set to true if using HTTPS
-//   });
+  res.cookie('authToken', token, {
+    path: "/",
+    expires: new Date(Date.now() + 1000 * 3600), // 1 hour
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production", // Set to true if using HTTPS
+  });
 
-//   return res.status(200).json({
-//     message: "Successfully Logged In",
-//     user: user,
-//     token,
-//   });
-// })
-// app.get('/profile', (req, res) => {
-//   const token = req.cookies.authToken;
+  return res.status(200).json({
+    message: "Successfully Logged In",
+    user: user,
+    token,
+  });
+})
+app.get('/profile', (req, res) => {
+  const token = req.cookies.authToken;
 
-//   if (!token) {
-//     return res.status(401).json({ message: 'No token provided' });
-//   }
-//   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
-//     if (err) {
-//       return res.status(401).json({ message: 'Failed to authenticate token' });
-//     }
-//     res.json({ id: decoded.id, name: decoded.name, type: decoded.type });
-//   });
-// });
-// app.post('/sendrequest', async (req, res) => {
-//   const { id, receiver_id } = req.body;
-//   const sender = await User.findOne({ _id: id });
-//   const receiver = await User.findOne({ _id: receiver_id });
-//   if (!sender || !receiver) {
-//     return res.status(400).json({ message: "Any of the user not exists" });
-//   }
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+  jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Failed to authenticate token' });
+    }
+    res.json({ id: decoded.id, name: decoded.name, type: decoded.type });
+  });
+});
+app.post('/sendrequest', async (req, res) => {
+  const { id, receiver_id } = req.body;
+  const sender = await User.findOne({ _id: id });
+  const receiver = await User.findOne({ _id: receiver_id });
+  if (!sender || !receiver) {
+    return res.status(400).json({ message: "Any of the user not exists" });
+  }
 
-//   const request = new Request({
-//     sender: sender.email,
-//     receiver: receiver.email
-//   });
+  const request = new Request({
+    sender: sender.email,
+    receiver: receiver.email
+  });
 
-//   request
-//     .save()
-//     .then(() => {
-//       return res.status(200).json({ message: 'Request Sent!' });
-//     })
-//     .catch((err) => {
-//       return res.status(500).json({ message: 'Request not Sent!' });
-//     });
-// });
-// app.post('/allusers', async (req, res) => {
-//   const { name, id, type } = req.body;
-//   const user = await User.findById(id); // Use findById for a single document
-//   if (type === 'youtuber') {
-//     const all_users = await User.find({ type: 'editor' });
-//     const all_notifications = await Request.find({ sender: user.email });
-//     const all_connections_initiated = await Connection.find({ sender: user.email });
-//     const all_connections_received = await Connection.find({ receiver: user.email });
-//     const all_neglected_emails = [
-//       ...all_notifications.map(notification => notification.receiver),
-//       ...all_connections_initiated.map(connection => connection.receiver),
-//       ...all_connections_received.map(connection => connection.sender)
-//     ];
-//     const all_neglected_users = await User.find({ email: { $in: all_neglected_emails } });
-//     const neglectedUserIds = new Set(all_neglected_users.map(user => user._id.toString()));
-//     const availableUsers = all_users.filter(user => !neglectedUserIds.has(user._id.toString()));
-//     res.json(availableUsers);
-//   }
-//   else {
-//     const all_users = await User.find({ type: 'youtuber' });
-//     const all_notifications = await Request.find({ sender: user.email });
-//     const all_connections_initiated = await Connection.find({ sender: user.email });
-//     const all_connections_received = await Connection.find({ receiver: user.email });
-//     const all_neglected_emails = [
-//       ...all_notifications.map(notification => notification.receiver),
-//       ...all_connections_initiated.map(connection => connection.receiver),
-//       ...all_connections_received.map(connection => connection.sender)
-//     ];
-//     const all_neglected_users = await User.find({ email: { $in: all_neglected_emails } });
-//     const neglectedUserIds = new Set(all_neglected_users.map(user => user._id.toString()));
-//     const availableUsers = all_users.filter(user => !neglectedUserIds.has(user._id.toString()));
-//     res.json(availableUsers);
-//   }
+  request
+    .save()
+    .then(() => {
+      return res.status(200).json({ message: 'Request Sent!' });
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: 'Request not Sent!' });
+    });
+});
+app.post('/allusers', async (req, res) => {
+  const { name, id, type } = req.body;
+  const user = await User.findById(id); // Use findById for a single document
+  if (type === 'youtuber') {
+    const all_users = await User.find({ type: 'editor' });
+    const all_notifications = await Request.find({ sender: user.email });
+    const all_connections_initiated = await Connection.find({ sender: user.email });
+    const all_connections_received = await Connection.find({ receiver: user.email });
+    const all_neglected_emails = [
+      ...all_notifications.map(notification => notification.receiver),
+      ...all_connections_initiated.map(connection => connection.receiver),
+      ...all_connections_received.map(connection => connection.sender)
+    ];
+    const all_neglected_users = await User.find({ email: { $in: all_neglected_emails } });
+    const neglectedUserIds = new Set(all_neglected_users.map(user => user._id.toString()));
+    const availableUsers = all_users.filter(user => !neglectedUserIds.has(user._id.toString()));
+    res.json(availableUsers);
+  }
+  else {
+    const all_users = await User.find({ type: 'youtuber' });
+    const all_notifications = await Request.find({ sender: user.email });
+    const all_connections_initiated = await Connection.find({ sender: user.email });
+    const all_connections_received = await Connection.find({ receiver: user.email });
+    const all_neglected_emails = [
+      ...all_notifications.map(notification => notification.receiver),
+      ...all_connections_initiated.map(connection => connection.receiver),
+      ...all_connections_received.map(connection => connection.sender)
+    ];
+    const all_neglected_users = await User.find({ email: { $in: all_neglected_emails } });
+    const neglectedUserIds = new Set(all_neglected_users.map(user => user._id.toString()));
+    const availableUsers = all_users.filter(user => !neglectedUserIds.has(user._id.toString()));
+    res.json(availableUsers);
+  }
 
-// })
-// app.post('/allrequests', async (req, res) => {
-//   try {
-//     const { idd } = req.body;
-//     const id=idd;
-//     const user = await User.findOne({ _id: id });
-//     if (!user) {
-//       return res.status(404).send({ error: 'User not found' });
-//     }
-//     const requests = await Request.find({ receiver: user.email });
-//     const allUsersPromises = requests.map(async (request) => {
-//       let u_email = request.sender;
-//       return await User.findOne({ email: u_email });
-//     });
-//     const all_users = await Promise.all(allUsersPromises);
-//     res.status(200).send(all_users.filter(user => user !== null));  // Filter out any null results if some users are not found
-//   } catch (error) {
-//     res.status(500).send({ error: 'An error occurred' });
-//   }
-// });
-// app.post('/acceptrequest', async (req, res) => {
-//   const { sender_id, id } = req.body;
-//   const sender = await User.findOne({ _id: sender_id });
-//   const receiver = await User.findOne({ _id: id });
-//   if (!sender || !receiver) {
-//     return res.status(400).json({ message: "Any of the user not exists" });
-//   }
-//   const deleted_request = await Request.deleteOne({ receiver: sender.email, receiver: receiver.email });
+})
+app.post('/allrequests', async (req, res) => {
+  try {
+    const { idd } = req.body;
+    const id=idd;
+    const user = await User.findOne({ _id: id });
+    if (!user) {
+      return res.status(404).send({ error: 'User not found' });
+    }
+    const requests = await Request.find({ receiver: user.email });
+    const allUsersPromises = requests.map(async (request) => {
+      let u_email = request.sender;
+      return await User.findOne({ email: u_email });
+    });
+    const all_users = await Promise.all(allUsersPromises);
+    res.status(200).send(all_users.filter(user => user !== null));  // Filter out any null results if some users are not found
+  } catch (error) {
+    res.status(500).send({ error: 'An error occurred' });
+  }
+});
+app.post('/acceptrequest', async (req, res) => {
+  const { sender_id, id } = req.body;
+  const sender = await User.findOne({ _id: sender_id });
+  const receiver = await User.findOne({ _id: id });
+  if (!sender || !receiver) {
+    return res.status(400).json({ message: "Any of the user not exists" });
+  }
+  const deleted_request = await Request.deleteOne({ receiver: sender.email, receiver: receiver.email });
 
-//   const connection = new Connection({
-//     sender: sender.email,
-//     receiver: receiver.email
-//   });
+  const connection = new Connection({
+    sender: sender.email,
+    receiver: receiver.email
+  });
 
-//   connection
-//     .save()
-//     .then(() => {
-//       return res.status(200).json({ message: 'Connected!' });
-//     })
-//     .catch((err) => {
-//       return res.status(500).json({ message: 'Not Connected!' });
-//     });
-// });
-// app.get('/allconnections', (req, res) => {
-//   const token = req.cookies.authToken;
+  connection
+    .save()
+    .then(() => {
+      return res.status(200).json({ message: 'Connected!' });
+    })
+    .catch((err) => {
+      return res.status(500).json({ message: 'Not Connected!' });
+    });
+});
+app.get('/allconnections', (req, res) => {
+  const token = req.cookies.authToken;
 
-//   if (!token) {
-//     return res.status(401).json({ message: 'No token provided' });
-//   }
-//   jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
-//     if (err) {
-//       return res.status(401).json({ message: 'Failed to authenticate token' });
-//     }
-//     const user_id = decoded.id;
-//     const full_user = await User.findOne({ _id: user_id });
-//     let u_email = full_user.email;
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
+  jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Failed to authenticate token' });
+    }
+    const user_id = decoded.id;
+    const full_user = await User.findOne({ _id: user_id });
+    let u_email = full_user.email;
 
 
-//     const connections = await Connection.find({
-//       $or: [
-//         { receiver: u_email },
-//         { sender: u_email }
-//       ]
-//     });
+    const connections = await Connection.find({
+      $or: [
+        { receiver: u_email },
+        { sender: u_email }
+      ]
+    });
 
-//     const allUsersConnections = connections.map(async (connection) => {
-//       if (u_email == connection.sender)//fetch all the details of receiver user
-//       {
-//         return await User.findOne({ email: connection.receiver });
-//       }
-//       else {
-//         return await User.findOne({ email: connection.sender });
-//       }
-//     });
-//     const all_users = await Promise.all(allUsersConnections);
-//     res.status(200).send(all_users.filter(user => user !== null));
+    const allUsersConnections = connections.map(async (connection) => {
+      if (u_email == connection.sender)//fetch all the details of receiver user
+      {
+        return await User.findOne({ email: connection.receiver });
+      }
+      else {
+        return await User.findOne({ email: connection.sender });
+      }
+    });
+    const all_users = await Promise.all(allUsersConnections);
+    res.status(200).send(all_users.filter(user => user !== null));
 
-//   });
-// });
-// app.post('/allnotifications', async (req, res) => {
-//   const token = req.cookies.authToken;
-//   if (!token) {
-//     return res.status(401).json({ message: 'No token provided' });
-//   }
+  });
+});
+app.post('/allnotifications', async (req, res) => {
+  const token = req.cookies.authToken;
+  if (!token) {
+    return res.status(401).json({ message: 'No token provided' });
+  }
 
-//   jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
-//     if (err) {
-//       return res.status(401).json({ message: 'Failed to authenticate token' });
-//     }
+  jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: 'Failed to authenticate token' });
+    }
 
-//     const user_id = decoded.id;
-//     const full_user = await User.findOne({ _id: user_id });
-//     const all_notifications = await Notification.find({ youtuber: full_user.email });
-//     // Send the response once
-//     console.log(all_notifications);
-//     res.status(200).send(all_notifications.filter(user => user !== null));
-//   });
-// });
+    const user_id = decoded.id;
+    const full_user = await User.findOne({ _id: user_id });
+    const all_notifications = await Notification.find({ youtuber: full_user.email });
+    // Send the response once
+    console.log(all_notifications);
+    res.status(200).send(all_notifications.filter(user => user !== null));
+  });
+});
 
 
 // const videoMetaStore = {};
