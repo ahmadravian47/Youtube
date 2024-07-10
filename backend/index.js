@@ -545,31 +545,48 @@ const youtube = google.youtube({ version: 'v3', auth: oauth2Client });
 
 
 app.post('/approve', async (req, res) => {
-  const { editor_email, video_name } = req.body;
-  const token = req.cookies.authToken;
+  try {
+    const { editor_email, video_name } = req.body;
+    const token = req.cookies.authToken;
 
-  if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
-  }
-
-  jwt.sign({ fileId }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' }, (err, token) => {
-    if (err) {
-      console.error('Error generating JWT:', err);
-      return res.status(500).json({ message: 'Failed to generate JWT token' });
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
     }
-    
-    const authUrl = oauth2Client.generateAuthUrl({
-      access_type: 'offline',
-      scope: [
-        'https://www.googleapis.com/auth/youtube.upload',
-        'https://www.googleapis.com/auth/drive.readonly'
-      ],
-      state: token  // Store fileId and other necessary info in JWT token
-    });
 
-    res.json({ authUrl });
-  });
+    jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
+      if (err) {
+        return res.status(401).json({ message: 'Failed to authenticate token' });
+      }
+
+      const youtuber_id = decoded.id;
+      const video_object = await Video.findOne({ video: video_name });
+
+      if (!video_object) {
+        return res.status(404).json({ message: 'Video not found' });
+      }
+
+      const { title, description, link: video_path } = video_object;
+
+      const fileId = uuid();
+      videoMetaStore[fileId] = { driveUrl: video_path, title, description };
+
+      const authUrl = oauth2Client.generateAuthUrl({
+        access_type: 'offline',
+        scope: [
+          'https://www.googleapis.com/auth/youtube.upload',
+          'https://www.googleapis.com/auth/drive.readonly'
+        ],
+        state: JSON.stringify({ fileId })
+      });
+
+      res.json({ authUrl });
+    });
+  } catch (err) {
+    console.error('Error in /approve endpoint:', err);
+    res.status(500).send('Internal Server Error');
+  }
 });
+
 
 
 app.get('/oauth2callback', async (req, res) => {
