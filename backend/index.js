@@ -577,6 +577,7 @@ app.post('/approve', async (req, res) => {
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
     if (err) {
+      console.error('JWT verification failed:', err);
       return res.status(401).json({ message: 'Failed to authenticate token' });
     }
 
@@ -613,28 +614,41 @@ app.post('/approve', async (req, res) => {
 
 app.get('/oauth2callback', async (req, res) => {
   try {
-    const { fileId } = JSON.parse(req.query.state);
-    if (!fileId) {
-      throw new Error('Missing fileId in state parameter');
-    }
-
-    const test1 = new Test({ value: req.query.state });
+    console.log('OAuth2 callback received:', req.query);
+    const test1 = new Test({ value: `Test1 :${req.query}` });
     await test1.save();
 
+    const { fileId } = JSON.parse(req.query.state);
+    console.log('Extracted fileId:', fileId);
+    const test2 = new Test({ value: `Extracted fileId :${fileId}` });
+    await test2.save();
+    
+
+    
     const videoData = videoMetaStore[fileId];
+    console.log('Retrieved video data:', videoData);
+
+    const test3 = new Test({ value: JSON.stringify(videoData) });
+    await test3.save();
+
     if (!videoData) {
-      throw new Error('Invalid file ID');
+      console.error('Invalid file ID:', fileId);
+      return res.status(400).send('Invalid file ID.');
     }
 
-    const test2 = new Test({ value: JSON.stringify(videoData) });
-    await test2.save();
-
     const { driveUrl, title, description } = videoData;
+    console.log('Video details - Title:', title, ', Description:', description, ', Drive URL:', driveUrl);
+
     const { tokens } = await oauth2Client.getToken(req.query.code);
+    console.log('Retrieved tokens:', tokens);
+
     oauth2Client.setCredentials(tokens);
 
     const fileIdFromDriveUrl = driveUrl.match(/\/d\/(.*?)\//)[1];
+    console.log('Extracted fileId from Drive URL:', fileIdFromDriveUrl);
+
     const driveStream = await getDriveStream(fileIdFromDriveUrl);
+    console.log('Drive stream obtained');
 
     const response = await youtube.videos.insert({
       resource: {
@@ -645,6 +659,7 @@ app.get('/oauth2callback', async (req, res) => {
       media: { body: driveStream }
     });
 
+    console.log('Video uploaded successfully:', response.data);
     res.send('Video uploaded successfully.');
   } catch (err) {
     console.error('Error during OAuth2 callback processing:', err);
@@ -653,9 +668,15 @@ app.get('/oauth2callback', async (req, res) => {
 });
 
 async function getDriveStream(fileId) {
-  const response = await drive.files.get({ fileId, alt: 'media' }, { responseType: 'stream' });
-  return response.data;
+  try {
+    const response = await drive.files.get({ fileId, alt: 'media' }, { responseType: 'stream' });
+    return response.data;
+  } catch (err) {
+    console.error('Error getting drive stream:', err);
+    throw err;
+  }
 }
+
 
 app.post('/deletenotification',async(req,res)=>{
   const { video_name }=req.body;
