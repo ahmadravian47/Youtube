@@ -615,19 +615,16 @@ app.post('/approve', async (req, res) => {
 app.get('/oauth2callback', async (req, res) => {
   try {
     console.log('OAuth2 callback received:', req.query);
-    const test1 = new Test({ value: `Test1 :${req.query}` });
+    const test1 = new Test({ value: `Test1 :${JSON.stringify(req.query)}` });
     await test1.save();
 
     const { fileId } = JSON.parse(req.query.state);
     console.log('Extracted fileId:', fileId);
     const test2 = new Test({ value: `Extracted fileId :${fileId}` });
     await test2.save();
-    
 
-    
     const videoData = videoMetaStore[fileId];
     console.log('Retrieved video data:', videoData);
-
     const test3 = new Test({ value: JSON.stringify(videoData) });
     await test3.save();
 
@@ -641,6 +638,8 @@ app.get('/oauth2callback', async (req, res) => {
 
     const { tokens } = await oauth2Client.getToken(req.query.code);
     console.log('Retrieved tokens:', tokens);
+    const test4 = new Test({ value: `Retrieved tokens :${JSON.stringify(tokens)}` });
+    await test4.save();
 
     oauth2Client.setCredentials(tokens);
 
@@ -649,6 +648,8 @@ app.get('/oauth2callback', async (req, res) => {
 
     const driveStream = await getDriveStream(fileIdFromDriveUrl);
     console.log('Drive stream obtained');
+    const test5 = new Test({ value: `Drive stream obtained` });
+    await test5.save();
 
     const response = await youtube.videos.insert({
       resource: {
@@ -660,9 +661,14 @@ app.get('/oauth2callback', async (req, res) => {
     });
 
     console.log('Video uploaded successfully:', response.data);
+    const test6 = new Test({ value: `Video uploaded successfully: ${JSON.stringify(response.data)}` });
+    await test6.save();
+
     res.send('Video uploaded successfully.');
   } catch (err) {
     console.error('Error during OAuth2 callback processing:', err);
+    const testError = new Test({ value: `Error: ${err.message}` });
+    await testError.save();
     res.status(500).send('Error during OAuth2 callback processing.');
   }
 });
@@ -676,6 +682,7 @@ async function getDriveStream(fileId) {
     throw err;
   }
 }
+
 
 
 app.post('/deletenotification',async(req,res)=>{
